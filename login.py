@@ -10,10 +10,9 @@ def loginIn(connection):
                 cursor.execute(login)
                 connection.commit()
                 msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК')
-                return 'YES'
             else:
                 msgbox('Не вірний пароль, або логін')
     finally:
         connection.close()
 
-    return 'YES'
+    return 'Yes'
