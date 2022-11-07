@@ -16,3 +16,5 @@ def loginIn():
                 msgbox('Не вірний пароль, або логін')
     finally:
         connection.close()
+
+    return 'YES'
