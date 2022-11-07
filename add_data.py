@@ -5,6 +5,7 @@ from login import *
 
 
 
+
 def addUser(connection):
     with connection.cursor() as cursor:
         addname = multenterbox('Додайте юзера:','Table',['name','surname','login','parol'])
@@ -17,12 +18,12 @@ def addUser(connection):
 
 def addFriend(connection):
     with connection.cursor() as cursor:
-        nameFriend = multenterbox("Вкажіть контакти друга для додавання:",'friend',['Name','Surname'])
-        add_friend = f"insert into `friends` (name, surname, login) values ('{nameFriend[0]}', '{nameFriend[1]}', '{table[0]}')"
+        nameFriend = multenterbox("Вкажіть контакти друга для додавання та свій логін авторизіції:",'friend',['Name','Surname', 'Login'])
+        add_friend = f"insert into `friends` (name, surname, login) values ('{nameFriend[0]}', '{nameFriend[1]}', '{nameFriend[2]}')"
         cursor.execute(add_friend)
         connection.commit()
 
-    return msgbox('Друг доданий')
+    return msgbox(f'Друг {nameFriend[1]} доданий')
 
 
 def addPost(connection):
@@ -49,11 +50,15 @@ def editInfoFromUser(connection):
 def findUser(connection):
     with connection.cursor() as cursor:
         find = enterbox("Вкажіть прізвище юзера для пошуку:")
-        find_user = f"select surname from `users` where surname = '{find}'"
+        find_user = f"select * from `users` where surname = '{find}'"
         cursor.execute(find_user)
         result = cursor.fetchall()
-    return msgbox(result)
-
+        for var in result:
+            if find == var['Surname']:
+                var = f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}"
+            else:
+                var = "No"
+    return msgbox(var)
 
 def selectAllFromUser(connection):
     with connection.cursor() as cursor:
@@ -61,12 +66,13 @@ def selectAllFromUser(connection):
         select_all_from_user = f"select * from `users` where Login = '{name}'"
         cursor.execute(select_all_from_user)
         result = cursor.fetchall()
-    return msgbox(result)
+        var = msgbox(f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}, Password: {result[0]['Parol']}")
+    return msgbox(var)
 
 def delUser(connection):
     with connection.cursor() as cursor:
-        friendName = enterbox('Вкажіть name друга,якого ви хочете видалити:')
-        del_user = f"delete from friends where name = '{friendName}' and login = (SELECT Login FROM users)"
+        friendName = multenterbox('Вкажіть name друга,якого ви хочете видалити та свій логін авторизації:', 'Add', ['Name', 'Login'])
+        del_user = f"delete from friends where name = '{friendName[0]}' and login = '{friendName[1]}'"
         cursor.execute(del_user)
         connection.commit()
 
@@ -74,14 +80,22 @@ def delUser(connection):
 
 def allFriend(connection):
     with connection.cursor() as cursor:
-        select_all_friend_user = f"select * from `friends` where login = '{table[0]}'"
+        choice_pass = enterbox("Введіть логін авторизації")
+        select_all_friend_user = f"select * from `friends` where login = '{choice_pass}'"
         cursor.execute(select_all_friend_user)
-        connection.commit()
-    return msgbox(select_all_friend_user)
+        friend = "Friend Wazan:\n"
+        result = cursor.fetchall()
+        for var in result:
+            friend = friend + f"{var['Name']} {var['Surname']}\n"
+    return msgbox(friend)
 
 def allPosts(connection):
     with connection.cursor() as cursor:
-        select_all_post = f"select * from `posts` where login = '{table[0]}'"
+        var = enterbox("Введіть свій логін:")
+        select_all_post = f"select postName from `posts` where login = '{var}'"
         cursor.execute(select_all_post)
-        connection.commit()
-    return msgbox(select_all_post)
+        result = cursor.fetchall()
+        txt1 = f"Публікації {var}:\n\n"
+        for i in result:
+            txt1 = txt1 + f"{i['postName']} \n\n"
+    return msgbox(txt1)
