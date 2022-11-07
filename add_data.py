@@ -28,10 +28,12 @@ def editInfoFromUser(connection):
         cursor.execute(edit_user)
         connection.commit()
 
+
 def findUser(connction):
     find_user = f"select surname from `users` where surname = '{surname}'"
     cursor.execute(find_user)
     connction.commit()
+
 
 def selectAllFromUser(connection):
     select_all_from_user = f"select * from `users` where name = '{name}'"
