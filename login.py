@@ -23,7 +23,7 @@ try:
             if cursor.execute(login):
                 cursor.execute(login)
                 connection.commit()
-                msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'Перейти до кошика')
+                msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'Зайти в акаунт')
             else:
                 msgbox('Користувач з таким іменем і паролем вже зареєстровані, виберіть інше')
     finally:
