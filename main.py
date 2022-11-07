@@ -3,15 +3,15 @@ from easygui import *
 from login import  *
 from add_data import  *
 
-userInter = enterbox("Enter your name for Database", "Password")
-passw = enterbox("Enter your password for Database", "Password")
+# userInter = enterbox("Enter your name for Database", "Password")
+# passw = enterbox("Enter your password for Database", "Password")
 
 try:
     connection = pymysql.connect(
         host="localhost",
         port=3306,
-        user=userInter,
-        password=passw,
+        user='Julia',
+        password='2002dododo',
         database="socialnetwork",
         cursorclass=pymysql.cursors.DictCursor
     )
@@ -29,7 +29,7 @@ try:
                                                                    "Інфо користувача", "Переглянути друзів користувача",
                                                                    "Перегляд усіх публікацій користувача", "Відміна"])
                         if choice == "Додати користувача":
-                            pass
+                            addUser(connection)
                         if choice == "Видалити користувача":
                             pass
                         if choice == "Редагування інфо користувача":

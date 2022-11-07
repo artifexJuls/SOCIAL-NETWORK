@@ -1,11 +1,15 @@
-from filestart import *
+import pymysql
+from easygui import *
 
 
 def addUser(connection):
     with connection.cursor() as cursor:
-        add_user = f"insert into `users` (name, surname, login, parol) values ('{name}', '{surname}', '{login}','{parol}')"
+        addname = multenterbox('Додайте юзера:','Table',['name','surname','login','parol'])
+        add_user = f"INSERT INTO socialnetwork.users (Name,Surname,Login,Parol) VALUES ('{addname[0]}', '{addname[1]}','{addname[2]}','{addname[3]}')"
         cursor.execute(add_user)
         connection.commit()
+
+    return msgbox(f"{addname[0]} доданий")
 
 
 def addFriend(connection):
