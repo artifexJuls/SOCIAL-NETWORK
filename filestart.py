@@ -1,7 +1,7 @@
 import pymysql
 from easygui import *
 
-userInter = enterbox("Enter your password for Database", "Password")
+userInter = enterbox("Enter your name for Database", "Password")
 passw = enterbox("Enter your password for Database", "Password")
 
 try:
