@@ -2,17 +2,22 @@ import pymysql
 from easygui import *
 
 def loginIn(connection):
-    table = multpasswordbox("Зайдіть в свій акаунт", "Table", ["Логін", "Пароль"])
-    try:
+    while True:
+        table = multpasswordbox("Зайдіть в свій акаунт", "Table", ["Логін", "Пароль"])
         with connection.cursor() as cursor:
             login = f"select * FROM `users` where login = '{table[0]}' and parol = '{table[1]}'"
-            if cursor.execute(login):
-                cursor.execute(login)
-                connection.commit()
-                msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК')
-            else:
-                msgbox('Не вірний пароль, або логін')
-    finally:
-        connection.close()
-
-    return 'Yes'
+            cursor.execute(login)
+            connection.commit()
+            result = cursor.fetchall()
+            print(login)
+            for i in result:
+                if table[0] == i["Login"] and table[1] == i["Parol"]:
+                    a = msgbox("Вхід дозволено")
+                    var = "Yes"
+                    msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК')
+                    break
+                else:
+                    msgbox("Невірний пороль або логін")
+            var = 'Yes'
+            break
+    return var

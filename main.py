@@ -27,21 +27,25 @@ try:
                         choice = buttonbox("Подальші дії", "Social network", ["Додати користувача", "Видалити користувача",
                                                                    "Редагування інфо користувача", "Пошук користувача",
                                                                    "Інфо користувача", "Переглянути друзів користувача",
-                                                                   "Перегляд усіх публікацій користувача", "Відміна"])
+                                                                   "Перегляд усіх публікацій користувача",'Додати друга',"Додати пост", "Відміна"])
                         if choice == "Додати користувача":
                             addUser(connection)
                         if choice == "Видалити користувача":
-                            pass
+                            delUser(connection)
                         if choice == "Редагування інфо користувача":
-                            pass
+                            editInfoFromUser(connection)
                         if choice == "Пошук користувача":
-                            pass
+                            findUser(connection)
                         if choice == "Інфо користувача":
-                            pass
+                            selectAllFromUser(connection)
                         if choice == "Переглянути друзів користувача":
-                            pass
+                            allFriend(connection)
                         if choice == "Перегляд усіх публікацій користувача":
-                            pass
+                            allPosts(connection)
+                        if choice == 'Додати друга':
+                            addFriend(connection)
+                        if choice == "Додати пост":
+                            addPost(connection)
 
 
     finally:
