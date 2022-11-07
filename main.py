@@ -1,16 +1,18 @@
 import pymysql
 from easygui import *
-from function import *
+from login import  *
+from add_data import  *
 
+userInter = enterbox("Enter your name for Database", "Password")
 passw = enterbox("Enter your password for Database", "Password")
 
 try:
     connection = pymysql.connect(
         host="localhost",
         port=3306,
-        user="root",
+        user=userInter,
         password=passw,
-        database="Basket",
+        database="socialnetwork",
         cursorclass=pymysql.cursors.DictCursor
     )
     print("Ok")
@@ -18,9 +20,9 @@ try:
     try:
         choice = 0
         while choice != "Відміна":
-            choice = buttonbox("Привіт, щоб почати покупки необхідно авторизуватись", "Authorizationr", ["Авторизація", "Відміна"])
+            choice = buttonbox("Зайдіть у свій акаунт", "Authorizationr", ["Авторизація", "Відміна"])
             if choice == "Авторизація":
-                if authorization(connection) == "Yes":
+                if loginIn(connection) == "Yes":
                     while choice != "Відміна":
                         choice = buttonbox("Подальші дії", "Social network", ["Додати користувача", "Видалити користувача",
                                                                    "Редагування інфо користувача", "Пошук користувача",
