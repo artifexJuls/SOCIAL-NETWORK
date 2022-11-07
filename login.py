@@ -14,7 +14,7 @@ try:
         cursorclass=pymysql.cursors.DictCursor
     )
     print("Ok")
-    start_meny = buttonbox('Що бажаєте робити?', 'FILES', ['Вхід', 'Реєстрація'])
+    start_meny = buttonbox('Увійдіть у свій акаунт', 'FILES', ['Вхід'])
     if start_meny == 'Вхід':
         table = multpasswordbox("Зайдіть в свій акаунт", "Table", ["Логін", "Пароль"])
     try:
@@ -24,6 +24,8 @@ try:
                 cursor.execute(login)
                 connection.commit()
                 msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'Перейти до кошика')
+            else:
+                msgbox('Користувач з таким іменем і паролем вже зареєстровані, виберіть інше')
     finally:
         connection.close()
 
