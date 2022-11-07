@@ -1,7 +1,7 @@
 import pymysql
 from easygui import *
 
-def loginIn():
+def loginIn(connection):
     start_meny = buttonbox('Увійдіть у свій акаунт', 'FILES', ['Вхід'])
     if start_meny == 'Вхід':
         table = multpasswordbox("Зайдіть в свій акаунт", "Table", ["Логін", "Пароль"])
