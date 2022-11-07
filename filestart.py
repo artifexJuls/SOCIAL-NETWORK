@@ -1,13 +1,14 @@
 import pymysql
 from easygui import *
 
+userInter = enterbox("Enter your password for Database", "Password")
 passw = enterbox("Enter your password for Database", "Password")
 
 try:
     connection = pymysql.connect(
         host="localhost",
         port=3306,
-        user="Julia",
+        user=userInter,
         password=passw,
         database="people",
         cursorclass=pymysql.cursors.DictCursor
@@ -29,9 +30,9 @@ try:
     connection = pymysql.connect(
         host="localhost",
         port=3306,
-        user="root",
+        user=userInter,
         password=passw,
-        database="NewsFeed",
+        database="socialnetwork",
         cursorclass=pymysql.cursors.DictCursor
     )
     print("Ok")
