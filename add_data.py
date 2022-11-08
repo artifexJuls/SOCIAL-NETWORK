@@ -237,4 +237,3 @@ def delPost(connection):
         else:
             msgbox(f"Краш програми логін: {delPost[1]} нема у базі", image='giphy.gif')
     return 'done'
-
