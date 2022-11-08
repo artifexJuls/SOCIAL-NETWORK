@@ -17,8 +17,8 @@ try:
 
     try:
         choice = 0
-        while choice != "Відміна":
-            choice = buttonbox("SocialNetwork", "Authorizationr", ["Авторизація", "Відміна"], 'j.gif')
+        while choice != "Вихід":
+            choice = buttonbox("SocialNetwork", "Authorizationr", ["Авторизація", "Вихід"], 'j.gif')
             if choice == "Авторизація":
                 if loginIn(connection) == "Yes":
                     while choice != "Відміна":
@@ -31,10 +31,10 @@ try:
                         if choice == "Search":
                             findUser(connection)
                         if choice == "Posts":
-                            while choice != "Відміна":
+                            while choice != "Повернутись":
                                 choice = buttonbox("Подальші дії", "Social network",
                                                    ["Додати пост", "Перегляд усіх публікацій", "Видалити пост",
-                                                    "Відміна"], 'post.gif')
+                                                    "Повернутись"], 'post.gif')
                                 if choice == "Додати пост":
                                     addPost(connection)
                                 if choice == "Перегляд усіх публікацій":
@@ -42,9 +42,9 @@ try:
                                 if choice == "Видалити пост":
                                     delPost(connection)
                         if choice == "Friends":
-                            while choice != "Відміна":
+                            while choice != "Повернутись":
                                 choice = buttonbox("Подальші дії", "Social network",
-                                                   ["Додати друга", "Переглянути друзів", "Видалити друга", "Відміна"],
+                                                   ["Додати друга", "Переглянути друзів", "Видалити друга", "Повернутись"],
                                                    'fr.gif')
                                 if choice == "Додати друга":
                                     addFriend(connection)
@@ -53,10 +53,10 @@ try:
                                 if choice == "Видалити друга":
                                     delFriend(connection)
                         if choice == "Settings":
-                            while choice != "Відміна":
+                            while choice != "Повернутись":
                                 choice = buttonbox("Подальші дії", "Social network",
                                                    ["Реєстрація нового юзера", "Видалити акаунт",
-                                                    "Редагувати інформацію", "Відміна"], 'set.gif')
+                                                    "Редагувати інформацію", "Повернутись"], 'set.gif')
                                 if choice == "Реєстрація нового юзера":
                                     addUser(connection)
                                 if choice == "Видалити акаунт":
