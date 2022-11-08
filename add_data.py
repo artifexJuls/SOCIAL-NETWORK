@@ -6,17 +6,26 @@ from login import *
 def addUser(connection):
     with connection.cursor() as cursor:
         addname = multenterbox('Реєстрація нового юзера:', 'Table', ['Name', 'Surname', 'Login', 'Parol'])
-        add_user = f"INSERT INTO socialnetwork.users (Name,Surname,Login,Parol) VALUES ('{addname[0]}', '{addname[1]}','{addname[2]}','{addname[3]}')"
-        cursor.execute(add_user)
-        connection.commit()
+        user_data = f"select login from `users`"
+        cursor.execute(user_data)
+        result = cursor.fetchall()
+        for el in result:
+            if addname[2] != el['login']:
+                add_user = f"INSERT INTO socialnetwork.users (Name,Surname,Login,Parol) VALUES ('{addname[0]}', '{addname[1]}','{addname[2]}','{addname[3]}')"
+                cursor.execute(add_user)
+                connection.commit()
+                msgbox(f"{addname[0]} зареєстрований", image='good.gif')
+            else:
+                msgbox(f"Краш програми логін: {addname[2]} вже зареестрований", image='giphy.gif')
 
-    return msgbox(f"{addname[0]} зареєстрований", image='good.gif')
+
+    return "Done"
 
 
 def addFriend(connection):
     with connection.cursor() as cursor:
         nameFriend = multenterbox("Вкажіть контакти друга для додавання та свій логін авторизації:", 'friend',
-                                  ['Name', 'Surname', 'Login'])
+                                  ['Name', 'Surname'])
         add_friend = f"insert into `friends` (name, surname, login) values ('{nameFriend[0]}', '{nameFriend[1]}', '{nameFriend[2]}')"
         cursor.execute(add_friend)
         connection.commit()
@@ -126,3 +135,14 @@ def delPost(connection):
         connection.commit()
 
     return msgbox('Пост видалений', image='good.gif')
+
+
+def alllogin(connection):
+    with connection.cursor() as cursor:
+        sel = "select Login from socialnetwork.users"
+        cursor.execute(sel)
+        result = cursor.fetchall()
+        allLog = []
+        for i in result:
+            allLog.append(i['Login'])
+    return allLog

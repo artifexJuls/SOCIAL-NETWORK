@@ -4,6 +4,7 @@ from login import *
 from add_data import *
 from filestart import *
 
+
 try:
     connection = pymysql.connect(
         host="localhost",
@@ -16,11 +17,13 @@ try:
     print("Ok")
 
     try:
+        log_now = 0
         choice = 0
-        while choice != "Вихід":
-            choice = buttonbox("SocialNetwork", "Authorizationr", ["Авторизація", "Вихід"], 'j.gif')
+        while choice != "Відміна":
+            choice = buttonbox("SocialNetwork", "Authorizationr", ["Авторизація", "Відміна"], 'j.gif')
             if choice == "Авторизація":
-                if loginIn(connection) == "Yes":
+                log_now = loginIn(connection)
+                if log_now in alllogin(connection):
                     while choice != "Відміна":
                         choice = buttonbox("Подальші дії", "Social network",
                                            ["Settings", "Search", "Friends",
@@ -31,10 +34,10 @@ try:
                         if choice == "Search":
                             findUser(connection)
                         if choice == "Posts":
-                            while choice != "Повернутись":
+                            while choice != "Відміна":
                                 choice = buttonbox("Подальші дії", "Social network",
                                                    ["Додати пост", "Перегляд усіх публікацій", "Видалити пост",
-                                                    "Повернутись"], 'post.gif')
+                                                    "Відміна"], 'post.gif')
                                 if choice == "Додати пост":
                                     addPost(connection)
                                 if choice == "Перегляд усіх публікацій":
@@ -42,9 +45,9 @@ try:
                                 if choice == "Видалити пост":
                                     delPost(connection)
                         if choice == "Friends":
-                            while choice != "Повернутись":
+                            while choice != "Відміна":
                                 choice = buttonbox("Подальші дії", "Social network",
-                                                   ["Додати друга", "Переглянути друзів", "Видалити друга", "Повернутись"],
+                                                   ["Додати друга", "Переглянути друзів", "Видалити друга", "Відміна"],
                                                    'fr.gif')
                                 if choice == "Додати друга":
                                     addFriend(connection)
@@ -53,10 +56,10 @@ try:
                                 if choice == "Видалити друга":
                                     delFriend(connection)
                         if choice == "Settings":
-                            while choice != "Повернутись":
+                            while choice != "Відміна":
                                 choice = buttonbox("Подальші дії", "Social network",
                                                    ["Реєстрація нового юзера", "Видалити акаунт",
-                                                    "Редагувати інформацію", "Повернутись"], 'set.gif')
+                                                    "Редагувати інформацію", "Відміна"], 'set.gif')
                                 if choice == "Реєстрація нового юзера":
                                     addUser(connection)
                                 if choice == "Видалити акаунт":
