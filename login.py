@@ -1,6 +1,7 @@
 import pymysql
 from easygui import *
 
+
 def loginIn(connection):
     while True:
         table = multpasswordbox("Зайдіть у свій акаунт", "Table", ["Логін", "Пароль"])
@@ -13,7 +14,7 @@ def loginIn(connection):
             for i in result:
                 if table[0] == i["Login"] and table[1] == i["Parol"]:
                     var = "Yes"
-                    msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК','good.gif')
+                    msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК', 'good.gif')
                     break
                 else:
                     msgbox("Невірний пороль або логін")
