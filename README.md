@@ -57,7 +57,7 @@
 ****
 + `Settings`
   -  Реєстрація нового юзера  :heavy_check_mark: 
-  -  Видаляння акаунта  :heavy_check_mark: 
+  -  Видалення акаунта  :heavy_check_mark: 
   -  Редагування інформації  :heavy_check_mark: 
 - Ці дії проводяться через таблицю `users`
 ****
