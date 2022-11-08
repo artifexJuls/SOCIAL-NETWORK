@@ -1,7 +1,7 @@
 import pymysql
 from easygui import *
-from login import  *
-from add_data import  *
+from login import *
+from add_data import *
 from filestart import *
 
 # userInter = enterbox("Enter your name for Database", "Password")
