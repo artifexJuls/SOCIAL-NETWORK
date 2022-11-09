@@ -71,4 +71,4 @@
 ![Alt-текст](https://github.com/juliasorbon/SOCIAL-NETWORK/blob/main/images/12.jpg "interface")
 
  :heavy_multiplication_x: _Баг (фіга) коду_ :heavy_multiplication_x: 
->Програма крашниться, якщо ви спробуєте видалити свій акаунт, по логіну під яким ви зайшли :heavy_multiplication_x: 
+>Програма крашниться, якщо ви спробуєте видалити свій акаунт, по логіну під яким ви зайшли.
