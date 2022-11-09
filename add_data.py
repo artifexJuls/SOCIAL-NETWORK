@@ -1,7 +1,7 @@
 import pymysql
 from easygui import *
 from login import *
-
+# from main import *
 
 def alllogin(connection):
     with connection.cursor() as cursor:
@@ -30,64 +30,37 @@ def addUser(connection):
     return "done"
 
 
-def addFriend(connection):
+def addFriend(connection, log_now):
     with connection.cursor() as cursor:
-        nameFriend = multenterbox("Вкажіть контакти друга для додавання та свій логін авторизації:", 'friend',
-                                  ['Name', 'Surname','Login'])
-        user_data = f"select login from `friends`"
-        cursor.execute(user_data)
-        result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if nameFriend[2] in loginList:
-            add_friend = f"insert into `friends` (name, surname, login) values ('{nameFriend[0]}', '{nameFriend[1]}', '{nameFriend[2]}')"
-            cursor.execute(add_friend)
-            connection.commit()
-            msgbox(f'Друг {nameFriend[1]} доданий', image='good.gif')
-        else:
-            msgbox(f"Краш програми логін: {nameFriend[2]} нема у базі", image='giphy.gif')
+        nameFriend = multenterbox("Вкажіть контакти друга для додавання:", 'friend',
+                                  ['Name', 'Surname'])
+        add_friend = f"insert into `friends` (name, surname, login) values ('{nameFriend[0]}', '{nameFriend[1]}', '{log_now}')"
+        cursor.execute(add_friend)
+        connection.commit()
+        msgbox(f'Друг {nameFriend[1]} доданий', image='good.gif')
     return 'done'
 
 
-def addPost(connection):
+def addPost(connection, log_now):
     with connection.cursor() as cursor:
-        namePost = multenterbox("Вкажіть назву поста та ваш логін", "Post", ["name Post", "login"])
-        user_data = f"select login from `posts`"
-        cursor.execute(user_data)
-        result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if namePost[1] in loginList:
-            post = enterbox("Напишіть свій пост:", image='helper.gif')
-            add_post = f"insert into `posts` (postName,post, Login) values ('{namePost[0]}','{post}', '{namePost[1]}')"
-            cursor.execute(add_post)
-            connection.commit()
-            msgbox('Пост додано', image='good.gif')
-        else:
-            msgbox(f"Краш програми логін: {namePost[1]} нема у базі", image='giphy.gif')
+        namePost = multenterbox("Вкажіть назву поста", "Post", ["name Post"])
+        post = enterbox("Напишіть свій пост:", image='helper.gif')
+        add_post = f"insert into `posts` (postName,post, Login) values ('{namePost[0]}','{post}', '{log_now}')"
+        cursor.execute(add_post)
+        connection.commit()
+        msgbox('Пост додано', image='good.gif')
     return 'done'
 
 
-def editInfoFromUser(connection):
+def editInfoFromUser(connection, log_now):
     with connection.cursor() as cursor:
         choice = buttonbox('Оберіть, що хочете оновити:', 'NewInfo', ['Name', 'Surname', 'login', 'Parol'], 'set.gif')
-        newInfo = multenterbox(f"Впишіть нові дані для {choice} та логін свого облікового запису", 'Table',
-                               [choice, "Login"])
-        user_data = f"select login from `users`"
-        cursor.execute(user_data)
-        result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if newInfo[1] in loginList:
-            edit_user = f"update `users` set {choice} = '{newInfo[0]}' where login ='{newInfo[1]}'"
-            cursor.execute(edit_user)
-            connection.commit()
-            msgbox('Зміни прийняті', image='good.gif')
-        else:
-            msgbox(f"Краш програми логін: {newInfo[1]} нема у базі", image='giphy.gif')
+        newInfo = multenterbox(f"Впишіть нові дані для {choice} свого облікового запису", 'Table',
+                               [choice])
+        edit_user = f"update `users` set {choice} = '{newInfo[0]}' where login ='{log_now}'"
+        cursor.execute(edit_user)
+        connection.commit()
+        msgbox('Зміни прийняті', image='good.gif')
     return 'done'
 
 
@@ -111,129 +84,97 @@ def findUser(connection):
                     var = "No"
             msgbox(var, image='programer.gif')
         else:
-            msgbox(f"Краш програми користувача з таким прізвишем нема у базі", image='giphy.gif')
+            msgbox(f"Користувача з таким прізвищем нема у базі", image='giphy.gif')
     return 'done'
 
 
-def selectAllFromUser(connection):
+def selectAllFromUser(connection, log_now):
     with connection.cursor() as cursor:
-        name = enterbox('Вкажіть свій Login :', image='helper.gif')
-        user_data = f"select login from `users`"
-        cursor.execute(user_data)
+        select_all_from_user = f"select * from `users` where Login = '{log_now}'"
+        cursor.execute(select_all_from_user)
         result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if name in loginList:
-            select_all_from_user = f"select * from `users` where Login = '{name}'"
-            cursor.execute(select_all_from_user)
-            result = cursor.fetchall()
-            msgbox(
-                f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}, Password: {result[0]['Parol']}",
-                image='programer.gif')
-        else:
-            msgbox(f"Краш програми логін: {name} нема у базі", image='giphy.gif')
+        msgbox(
+            f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}, Password: {result[0]['Parol']}",
+            image='programer.gif')
     return 'done'
 
 
-def delFriend(connection):
+def delFriend(connection, log_now):
     with connection.cursor() as cursor:
-        friendName = multenterbox('Вкажіть name друга,якого ви хочете видалити та свій логін авторизації:', 'Add',
-                                  ['Name','Surname', 'Login'])
-        user_data = f"select login from `friends`"
+        friendName = multenterbox('Вкажіть name друга,якого ви хочете видалити:', 'Add',
+                                  ['Name','Surname'])
+        user_data = f"select Name, Surname from `friends` WHERE Login = '{log_now}'"
         cursor.execute(user_data)
         result = cursor.fetchall()
-        loginList = []
+        nameList = []
+        surnameList = []
         for el in result:
-            loginList.append(el['login'])
-        if friendName[0] and friendName[1] and friendName[2] in loginList:
-            del_user = f"delete from `friends` where name = '{friendName[0]}' and surname = '{friendName[1]}' and login = '{friendName[2]}'"
+            nameList.append(el['Name'])
+            surnameList.append(el['Surname'])
+        if friendName[0] in nameList and friendName[1] in surnameList:
+            del_user = f"delete from `friends` where name = '{friendName[0]}' and surname = '{friendName[1]}' and login = '{log_now}'"
             cursor.execute(del_user)
             connection.commit()
             msgbox('Користувач видалений', image='good.gif')
         else:
-            msgbox(f"Краш програми логін: {friendName[2]} нема у базі", image='giphy.gif')
+            msgbox(f"Такого серед друзів не знайдено у базі", image='giphy.gif')
     return 'done'
 
 
-def delUser(connection):
-    with connection.cursor() as cursor:
-        delName = enterbox('Вкажіть свій логін для видалення:', 'DELETE', )
-        user_data = f"select login from `users`"
-        cursor.execute(user_data)
-        result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if delName in loginList:
-            del_user = f"delete from `users` where login = '{delName}'"
+def delUser(connection, log_now):
+    choice = buttonbox(f'{log_now}, ви дійсно бажаєте видалити савій аккаунт', "Dell", ["Так", "Повернутись"], image='good.gif')
+    if choice == "Так":
+        with connection.cursor() as cursor:
+            print("1")
+            del_user = f"delete from `users` where login = '{log_now}'"
+            print("2")
             cursor.execute(del_user)
+            print("3")
             connection.commit()
+            print("4")
             msgbox('Користувач видалений', image='good.gif')
-        else:
-            msgbox(f"Краш програми логін: {delName} нема у базі", image='giphy.gif')
     return 'done'
 
 
-def allFriend(connection):
+def allFriend(connection, log_now):
     with connection.cursor() as cursor:
-        choice_pass = enterbox("Введіть логін авторизації", image='1.gif')
-        user_data = f"select login from `friends`"
+        select_all_friend_user = f"select * from `friends` where login = '{log_now}'"
+        cursor.execute(select_all_friend_user)
+        friend = f"Друзі користувача {log_now}:\n"
+        result = cursor.fetchall()
+        for var in result:
+            friend = friend + f"{var['Name']} {var['Surname']}\n"
+            msgbox(friend, image='programer.gif')
+    return 'done'
+
+
+def allPosts(connection, log_now):
+    with connection.cursor() as cursor:
+        select_all_post = f"select postName,Post from `posts` where login = '{log_now}'"
+        cursor.execute(select_all_post)
+        result = cursor.fetchall()
+        txt1 = f"Публікації {log_now}:\n\n"
+        for i in result:
+            txt1 = txt1 + f"{i['postName']} \n\n{i['Post']}\n\n"
+        msgbox(txt1, image='2.gif')
+    return 'done'
+
+
+def delPost(connection, log_now):
+    with connection.cursor() as cursor:
+        delPost = multenterbox('Вкажіть Назву поста,який ви хочете видалити:', 'DELETE',
+                               ['Name'])
+        user_data = f"select postName from `posts`"
         cursor.execute(user_data)
         result = cursor.fetchall()
         loginList = []
         for el in result:
-            loginList.append(el['login'])
-        if choice_pass in loginList:
-            select_all_friend_user = f"select * from `friends` where login = '{choice_pass}'"
-            cursor.execute(select_all_friend_user)
-            friend = f"Друзі користувача {choice_pass}:\n"
-            result = cursor.fetchall()
-            for var in result:
-                friend = friend + f"{var['Name']} {var['Surname']}\n"
-                msgbox(friend, image='programer.gif')
-        else:
-            msgbox(f"Краш програми логін: {choice_pass} нема у базі", image='giphy.gif')
-    return 'done'
-
-
-def allPosts(connection):
-    with connection.cursor() as cursor:
-        var = enterbox("Введіть свій логін:", image='wifi.gif')
-        user_data = f"select login from `post`"
-        cursor.execute(user_data)
-        result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if var in loginList:
-            select_all_post = f"select postName,Post from `posts` where login = '{var}'"
-            cursor.execute(select_all_post)
-            result = cursor.fetchall()
-            txt1 = f"Публікації {var}:\n\n"
-            for i in result:
-                txt1 = txt1 + f"{i['postName']} \n\n{i['Post']}"
-                msgbox(txt1, image='2.gif')
-        else:
-            msgbox(f"Краш програми логін: {var} нема у базі", image='giphy.gif')
-    return 'done'
-
-
-def delPost(connection):
-    with connection.cursor() as cursor:
-        delPost = multenterbox('Вкажіть Назву поста,який ви хочете видалити та свій логін авторизації:', 'DELETE',
-                               ['Name', 'Login'])
-        user_data = f"select login from `posts`"
-        cursor.execute(user_data)
-        result = cursor.fetchall()
-        loginList = []
-        for el in result:
-            loginList.append(el['login'])
-        if delPost[1] in loginList:
-            del_Post = f"delete from `posts` where login = '{delPost[1]}' and postName = '{delPost[0]}'"
+            loginList.append(el['postName'])
+        if delPost[0] in loginList:
+            del_Post = f"delete from `posts` where login = '{log_now}' and postName = '{delPost[0]}'"
             cursor.execute(del_Post)
             connection.commit()
             msgbox('Пост видалений', image='good.gif')
         else:
-            msgbox(f"Краш програми логін: {delPost[1]} нема у базі", image='giphy.gif')
+            msgbox(f"{delPost[0]} нема у базі", image='giphy.gif')
     return 'done'

@@ -5,6 +5,7 @@ from add_data import *
 from filestart import *
 
 
+
 try:
     connection = pymysql.connect(
         host="localhost",
@@ -24,14 +25,13 @@ try:
             if choice == "Авторизація":
                 log_now = loginIn(connection)
                 if log_now in alllogin(connection):
-                    print(log_now)
                     while choice != "Відміна":
                         choice = buttonbox("Подальші дії", "Social network",
                                            ["Settings", "Search", "Friends",
                                             "Posts", "User info",
                                             "Відміна"], '1.gif')
                         if choice == "User info":
-                            selectAllFromUser(connection)
+                            selectAllFromUser(connection, log_now)
                         if choice == "Search":
                             findUser(connection)
                         if choice == "Posts":
@@ -40,22 +40,22 @@ try:
                                                    ["Додати пост", "Перегляд усіх публікацій", "Видалити пост",
                                                     "Повернутись"], 'post.gif')
                                 if choice == "Додати пост":
-                                    addPost(connection)
+                                    addPost(connection, log_now)
                                 if choice == "Перегляд усіх публікацій":
-                                    allPosts(connection)
+                                    allPosts(connection, log_now)
                                 if choice == "Видалити пост":
-                                    delPost(connection)
+                                    delPost(connection, log_now)
                         if choice == "Friends":
                             while choice != "Повернутись":
                                 choice = buttonbox("Подальші дії", "Social network",
                                                    ["Додати друга", "Переглянути друзів", "Видалити друга", "Повернутись"],
                                                    'fr.gif')
                                 if choice == "Додати друга":
-                                    addFriend(connection)
+                                    addFriend(connection, log_now)
                                 if choice == "Переглянути друзів":
-                                    allFriend(connection)
+                                    allFriend(connection, log_now)
                                 if choice == "Видалити друга":
-                                    delFriend(connection)
+                                    delFriend(connection, log_now)
                         if choice == "Settings":
                             while choice != "Повернутись":
                                 choice = buttonbox("Подальші дії", "Social network",
@@ -64,9 +64,9 @@ try:
                                 if choice == "Реєстрація нового юзера":
                                     addUser(connection)
                                 if choice == "Видалити акаунт":
-                                    delUser(connection)
+                                    delUser(connection, log_now)
                                 if choice == "Редагувати інформацію":
-                                    editInfoFromUser(connection)
+                                    editInfoFromUser(connection, log_now)
                 else:
                     break
     finally:
