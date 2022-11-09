@@ -126,7 +126,7 @@ def delFriend(connection, log_now):
 def delUser(connection, log_now):
     choice = buttonbox(f'{log_now}, ви дійсно бажаєте видалити савій аккаунт', "Dell", ["Так", "Повернутись"], image='good.gif')
     if choice == "Так":
-        choice2 = enterbox("Впишіть свій логін для підтвердження:")
+        choice2 = enterbox("Впишіть свій логін для підтвердження:",image='200w.gif')
         with connection.cursor() as cursor:
             del_user = f"delete from `users` where Login = '{choice2}'"
             print('1')
