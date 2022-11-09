@@ -10,7 +10,7 @@ try:
         port=3306,
         user=userInter,
         password=passw,
-        database="people",
+        database="sakila",
         cursorclass=pymysql.cursors.DictCursor
     )
     print("Ok")

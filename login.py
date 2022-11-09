@@ -13,7 +13,7 @@ def loginIn(connection):
             print(login)
             for i in result:
                 if table[0] == i["Login"] and table[1] == i["Parol"]:
-                    msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК', 'good.gif')
+                    msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК', 'images\\good.gif')
                     login = i["Login"]
                     break
                 else:
