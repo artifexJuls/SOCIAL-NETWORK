@@ -65,6 +65,7 @@ try:
                                     addUser(connection)
                                 if choice == "Видалити акаунт":
                                     delUser(connection, log_now)
+                                    break
                                 if choice == "Редагувати інформацію":
                                     editInfoFromUser(connection, log_now)
                 else:

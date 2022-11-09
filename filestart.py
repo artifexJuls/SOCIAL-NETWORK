@@ -1,8 +1,8 @@
 import pymysql
 from easygui import *
 
-userInter = "root" # enterbox("What's your name(root) in SQL?", "Password")
-passw ="12921292a" # enterbox("Enter your password for SQL", "Password")
+userInter = enterbox("What's your name(root) in SQL?", "Password")
+passw = enterbox("Enter your password for SQL", "Password")
 
 try:
     connection = pymysql.connect(

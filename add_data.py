@@ -25,8 +25,10 @@ def addUser(connection):
                 cursor.execute(add_user)
                 connection.commit()
                 msgbox(f"{addname[0]} зареєстрований", image='good.gif')
+                break
             else:
                 msgbox(f"Краш програми логін: {addname[2]} вже зареестрований", image='giphy.gif')
+                break
     return "done"
 
 
@@ -54,7 +56,7 @@ def addPost(connection, log_now):
 
 def editInfoFromUser(connection, log_now):
     with connection.cursor() as cursor:
-        choice = buttonbox('Оберіть, що хочете оновити:', 'NewInfo', ['Name', 'Surname', 'login', 'Parol'], 'set.gif')
+        choice = buttonbox('Оберіть, що хочете оновити:', 'NewInfo', ['Name', 'Surname', 'Parol'], 'set.gif')
         newInfo = multenterbox(f"Впишіть нові дані для {choice} свого облікового запису", 'Table',
                                [choice])
         edit_user = f"update `users` set {choice} = '{newInfo[0]}' where login ='{log_now}'"
@@ -124,16 +126,17 @@ def delFriend(connection, log_now):
 def delUser(connection, log_now):
     choice = buttonbox(f'{log_now}, ви дійсно бажаєте видалити савій аккаунт', "Dell", ["Так", "Повернутись"], image='good.gif')
     if choice == "Так":
+        choice2 = enterbox("Впишіть свій логін для підтвердження:")
         with connection.cursor() as cursor:
-            print("1")
-            del_user = f"delete from `users` where login = '{log_now}'"
-            print("2")
+            del_user = f"delete from `users` where Login = '{choice2}'"
+            print('1')
             cursor.execute(del_user)
-            print("3")
+            print('2')
             connection.commit()
-            print("4")
+            print('3')
             msgbox('Користувач видалений', image='good.gif')
-    return 'done'
+            choice = "Відміна"
+    return "done"
 
 
 def allFriend(connection, log_now):
@@ -144,7 +147,7 @@ def allFriend(connection, log_now):
         result = cursor.fetchall()
         for var in result:
             friend = friend + f"{var['Name']} {var['Surname']}\n"
-            msgbox(friend, image='programer.gif')
+        msgbox(friend, image='programer.gif')
     return 'done'
 
 
