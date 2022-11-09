@@ -83,7 +83,7 @@ def findUser(connection):
             var = f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}"
             msgbox(var, image='images\\programer.gif')
         else:
-            msgbox(f"Користувача з логіном {find} нема у базі", image='images\\giphy.gif')
+            msgbox(f"Користувача з логіном: {find} нема у базі", image='images\\giphy.gif')
     return 'done'
 
 
