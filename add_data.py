@@ -33,22 +33,19 @@ def addUser(connection):
 
 
 def addFriend(connection, log_now):
+    nameFriend = enterbox("Вкажіть login друга для додавання:", 'friend', image='images\\j.gif')
     with connection.cursor() as cursor:
-        nameFriend = enterbox("Вкажіть login друга для додавання:", 'friend',image='images\\j.gif')
-        user_data = f"select login,name,surname from `users` where login = {nameFriend}"
+        user_data = f"select * from `users` where login = '{nameFriend}'"
         cursor.execute(user_data)
         result = cursor.fetchall()
-        surnList = []
-        nameList = []
-        loginList = []
-        for el in result:
-            surnList.append(el['surname'])
-            nameList.append(el['name'])
-            loginList.append(el['login'])
-            add_friend = f"insert into `friends` (name, surname,login,FriendLogin) values ('{nameList}', '{surnList}','{log_now}','{nameFriend}')"
-            cursor.execute(add_friend)
-            connection.commit()
-            msgbox(f'Друг під ніком {nameFriend} - доданий', image='images\\good.gif')
+        print('result_1 =', result)
+        if len(result) > 0:
+            with connection.cursor() as cursor:
+                add_friend = f"insert into `friends` (name, surname, login,FriendLogin) values ('{result[0]['Name']}', '{result[0]['Surname']}','{log_now}','{result[0]['Login']}')"
+                print("1")
+                cursor.execute(add_friend)
+                connection.commit()
+                msgbox(f'Друг під ніком {nameFriend} - доданий', image='images\\good.gif')
         else:
             msgbox(f"Такого користувача не знайдено", image='images\\giphy.gif')
     return 'done'
@@ -78,26 +75,16 @@ def editInfoFromUser(connection, log_now):
 
 
 def findUser(connection):
+    find = enterbox("Вкажіть login юзера для пошуку:", image='images\\about.gif')
     with connection.cursor() as cursor:
-        find = enterbox("Вкажіть login юзера для пошуку:", image='images\\about.gif')
-        user_data = f"select * from socialnetwork.users"
+        user_data = f"select * from socialnetwork.users where login = '{find}'"
         cursor.execute(user_data)
         result = cursor.fetchall()
-        SurnList = []
-        for el in result:
-            SurnList.append(el['login'])
-        if find in SurnList:
-            find_user = f"select * from `users` where login = '{find}'"
-            cursor.execute(find_user)
-            result = cursor.fetchall()
-            for var in result:
-                if find == var['login']:
-                    var = f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}"
-                else:
-                    var = "No"
+        if len(result) > 0:
+            var = f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}"
             msgbox(var, image='images\\programer.gif')
         else:
-            msgbox(f"Користувача з таким прізвищем нема у базі", image='images\\giphy.gif')
+            msgbox(f"Користувача з логіном {find} нема у базі", image='images\\giphy.gif')
     return 'done'
 
 
@@ -122,10 +109,11 @@ def delFriend(connection, log_now):
         for el in result:
             surnameList.append(el['FriendLogin'])
         if friendName in surnameList:
-            del_user = f"delete from `friends` where FriendLogin = '{friendName}' and login = '{log_now}'"
-            cursor.execute(del_user)
-            connection.commit()
-            msgbox('Користувач видалений', image='images\\good.gif')
+            with connection.cursor() as cursor:
+                del_user = f"delete from `friends` where FriendLogin = '{friendName}' and login = '{log_now}'"
+                cursor.execute(del_user)
+                connection.commit()
+                msgbox('Користувач видалений', image='images\\good.gif')
         else:
             msgbox(f"Такого користувача не знайдено", image='images\\giphy.gif')
     return 'done'
