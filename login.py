@@ -10,7 +10,6 @@ def loginIn(connection):
             cursor.execute(login)
             connection.commit()
             result = cursor.fetchall()
-            print(login)
             for i in result:
                 if table[0] == i["Login"] and table[1] == i["Parol"]:
                     msgbox('Ви успішно зайшли у свій акаунт', 'Welcome', 'ОК', 'images\\good.gif')

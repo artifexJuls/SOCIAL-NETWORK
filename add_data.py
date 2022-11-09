@@ -38,7 +38,6 @@ def addFriend(connection, log_now):
         user_data = f"select * from `users` where login = '{nameFriend}'"
         cursor.execute(user_data)
         result = cursor.fetchall()
-        print('result_1 =', result)
         if len(result) > 0:
             with connection.cursor() as cursor:
                 add_friend = f"insert into `friends` (name, surname, login,FriendLogin) values ('{result[0]['Name']}', '{result[0]['Surname']}','{log_now}','{result[0]['Login']}')"
@@ -123,11 +122,8 @@ def delUser(connection, log_now):
     choice2 = enterbox("Впишіть логін для видалення юзера:",image='images\\200w.gif')
     with connection.cursor() as cursor:
         del_user = f"delete from `users` where Login = '{choice2}'"
-        print('1')
         cursor.execute(del_user)
-        print('2')
         connection.commit()
-        print('3')
         msgbox('Користувач видалений', image='images\\good.gif')
         choice = "Відміна"
     return "done"
