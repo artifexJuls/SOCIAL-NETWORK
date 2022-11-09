@@ -41,9 +41,9 @@ try:
 
         with connection.cursor() as cursor:
             create_table1 = "CREATE TABLE `users` (id int auto_increment,Name nvarchar(100), Surname nvarchar(100),Login nvarchar(100) UNIQUE,Parol nvarchar(100),primary key (id));"
-            create_table2 = "CREATE TABLE `friends` (id int auto_increment,Name nvarchar(100), Surname nvarchar(100),Login nvarchar(100),primary key (id), foreign key (Login) references `users` (Login));"
+            create_table2 = "CREATE TABLE `friends` (id int auto_increment,Name nvarchar(100), Surname nvarchar(100),Login nvarchar(100),FriendLogin nvarchar(100),primary key (id), foreign key (Login) references `users` (Login));"
             create_table3 = "CREATE TABLE `posts` (id int auto_increment,postName nvarchar(100),Post nvarchar(1000), Login nvarchar(100),primary key (id),foreign key (Login) references `users` (Login));"
-            first_users = "INSERT INTO `users` (Name,Surname,Login,Parol) VALUES ('Pavlo','Bezd','Wazan','1234')"
+            first_users = "INSERT INTO `users` (Name,Surname,Login,Parol) VALUES ('Pavlo','Bezd','ADMIN','1234')"
             cursor.execute(create_table1)
             cursor.execute(create_table2)
             cursor.execute(create_table3)

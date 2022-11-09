@@ -34,12 +34,23 @@ def addUser(connection):
 
 def addFriend(connection, log_now):
     with connection.cursor() as cursor:
-        nameFriend = multenterbox("Вкажіть контакти друга для додавання:", 'friend',
-                                  ['Name', 'Surname'])
-        add_friend = f"insert into `friends` (name, surname, login) values ('{nameFriend[0]}', '{nameFriend[1]}', '{log_now}')"
-        cursor.execute(add_friend)
-        connection.commit()
-        msgbox(f'Друг {nameFriend[1]} доданий', image='good.gif')
+        nameFriend = enterbox("Вкажіть login друга для додавання:", 'friend',image='j.gif')
+        user_data = f"select login,name,surname from `users` where login = {nameFriend}"
+        cursor.execute(user_data)
+        result = cursor.fetchall()
+        surnList = []
+        nameList = []
+        loginList = []
+        for el in result:
+            surnList.append(el['surname'])
+            nameList.append(el['name'])
+            loginList.append(el['login'])
+            add_friend = f"insert into `friends` (name, surname, login,FriendLogin) values ('{nameList}', '{surnList}','{log_now}','{nameFriend}')"
+            cursor.execute(add_friend)
+            connection.commit()
+            msgbox(f'Друг під ніком {nameFriend} - доданий', image='good.gif')
+        else:
+            msgbox(f"Такого користувача не знайдено", image='giphy.gif')
     return 'done'
 
 
@@ -68,19 +79,19 @@ def editInfoFromUser(connection, log_now):
 
 def findUser(connection):
     with connection.cursor() as cursor:
-        find = enterbox("Вкажіть прізвище юзера для пошуку:", image='1.gif')
-        user_data = f"select surname from `users`"
+        find = enterbox("Вкажіть login юзера для пошуку:", image='1.gif')
+        user_data = f"select * from socialnetwork.users"
         cursor.execute(user_data)
         result = cursor.fetchall()
         SurnList = []
         for el in result:
-            SurnList.append(el['surname'])
+            SurnList.append(el['login'])
         if find in SurnList:
-            find_user = f"select * from `users` where surname = '{find}'"
+            find_user = f"select * from `users` where login = '{find}'"
             cursor.execute(find_user)
             result = cursor.fetchall()
             for var in result:
-                if find == var['Surname']:
+                if find == var['login']:
                     var = f"{result[0]['Name']} {result[0]['Surname']}, Login: {result[0]['Login']}"
                 else:
                     var = "No"
@@ -103,39 +114,34 @@ def selectAllFromUser(connection, log_now):
 
 def delFriend(connection, log_now):
     with connection.cursor() as cursor:
-        friendName = multenterbox('Вкажіть name друга,якого ви хочете видалити:', 'Add',
-                                  ['Name','Surname'])
-        user_data = f"select Name, Surname from `friends` WHERE Login = '{log_now}'"
+        friendName = enterbox('Вкажіть login друга,якого ви хочете видалити:', 'Add',image='j.gif')
+        user_data = f"select FriendLogin from `friends` WHERE Login = '{log_now}'"
         cursor.execute(user_data)
         result = cursor.fetchall()
-        nameList = []
         surnameList = []
         for el in result:
-            nameList.append(el['Name'])
-            surnameList.append(el['Surname'])
-        if friendName[0] in nameList and friendName[1] in surnameList:
-            del_user = f"delete from `friends` where name = '{friendName[0]}' and surname = '{friendName[1]}' and login = '{log_now}'"
+            surnameList.append(el['FriendLogin'])
+        if friendName in surnameList:
+            del_user = f"delete from `friends` where FriendLogin = '{friendName}' and login = '{log_now}'"
             cursor.execute(del_user)
             connection.commit()
             msgbox('Користувач видалений', image='good.gif')
         else:
-            msgbox(f"Такого серед друзів не знайдено у базі", image='giphy.gif')
+            msgbox(f"Такого користувача не знайдено", image='giphy.gif')
     return 'done'
 
 
 def delUser(connection, log_now):
-    choice = buttonbox(f'{log_now}, ви дійсно бажаєте видалити савій аккаунт', "Dell", ["Так", "Повернутись"], image='good.gif')
-    if choice == "Так":
-        choice2 = enterbox("Впишіть свій логін для підтвердження:",image='200w.gif')
-        with connection.cursor() as cursor:
-            del_user = f"delete from `users` where Login = '{choice2}'"
-            print('1')
-            cursor.execute(del_user)
-            print('2')
-            connection.commit()
-            print('3')
-            msgbox('Користувач видалений', image='good.gif')
-            choice = "Відміна"
+    choice2 = enterbox("Впишіть логін для видалення юзера:",image='200w.gif')
+    with connection.cursor() as cursor:
+        del_user = f"delete from `users` where Login = '{choice2}'"
+        print('1')
+        cursor.execute(del_user)
+        print('2')
+        connection.commit()
+        print('3')
+        msgbox('Користувач видалений', image='good.gif')
+        choice = "Відміна"
     return "done"
 
 
