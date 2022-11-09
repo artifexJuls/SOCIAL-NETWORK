@@ -79,7 +79,7 @@ def editInfoFromUser(connection, log_now):
 
 def findUser(connection):
     with connection.cursor() as cursor:
-        find = enterbox("Вкажіть login юзера для пошуку:", image='1.gif')
+        find = enterbox("Вкажіть login юзера для пошуку:", image='about.gif')
         user_data = f"select * from socialnetwork.users"
         cursor.execute(user_data)
         result = cursor.fetchall()
@@ -114,7 +114,7 @@ def selectAllFromUser(connection, log_now):
 
 def delFriend(connection, log_now):
     with connection.cursor() as cursor:
-        friendName = enterbox('Вкажіть login друга,якого ви хочете видалити:', 'Add',image='j.gif')
+        friendName = enterbox('Вкажіть login друга,якого ви хочете видалити:', 'Add',image='77.gif')
         user_data = f"select FriendLogin from `friends` WHERE Login = '{log_now}'"
         cursor.execute(user_data)
         result = cursor.fetchall()
